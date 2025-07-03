@@ -8,12 +8,11 @@ output "eDP-1" { mode "1366x768@60"; }
 /// AUTOSTART ///
 /////////////////
 
-// spawn-at-startup "swaync"
+spawn-at-startup "swaync"
 spawn-at-startup "wl-paste" "--type" "text" "--watch" "cliphist" "store"
 spawn-at-startup "wl-paste" "--type" "image" "--watch" "cliphist" "store"
 spawn-at-startup "~/.theme.sh"
 spawn-at-startup "swayidle"
-spawn-at-startup "kitty" "--execute" "--hold" "sudo" "pacman" "-Syu"
 
 /////////////////////////////
 /// ENVIRONMENT VARIABLES ///
@@ -71,14 +70,9 @@ prefer-no-csd
 
 screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
-// Open the Firefox picture-in-picture player as floating by default.
-window-rule {
-    // This app-id regular expression will work for both:
-    // - host Firefox (app-id is "firefox")
-    // - Flatpak Firefox (app-id is "org.mozilla.firefox")
-    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
-    open-floating true
-}
+/////////////////////////////
+/// "GLOBAL" WINDOW RULES ///
+/////////////////////////////
 
 window-rule {
     geometry-corner-radius 7.5
@@ -88,7 +82,17 @@ window-rule {
 
 window-rule {
     match is-floating=true
-    baba-is-float true
+    // baba-is-float true
+    // Is "Baba is Float" good in... any way? No! But is it funny? Debatably! ENABLE IT!
+}
+
+/////////////////////////////////////////
+/// APPLICATION-SPECIFIC WINDOW RULES ///
+/////////////////////////////////////////
+
+window-rule {
+    match app-id=r#"librewolf$"# title="^Picture-in-Picture$"
+    open-floating true
 }
 
 window-rule {
@@ -102,11 +106,7 @@ binds {
     // Tools //
     CTRL+Space { spawn "fuzzel"; }
     Mod+Return { spawn "kitty"; }
-    Mod+Shift+Return { spawn "cool-retro-term" "--profile" "mocha"; }
     Mod+B { spawn "librewolf"; }
-    Mod+Ctrl+Shift+B { spawn "flatpak" "run" "org.torproject.torbrowser-launcher"; }
-    Mod+P { spawn "protonvpn-app"; }
-    Mod+O { spawn "obsidian" "--no-sandbox" "--ozone-platform=wayland" "--ozone-platform-hint=auto" "--enable-features=UseOzonePlatform,WaylandWindowDecorations"; }
     Print { screenshot; }
     Shift+Print { screenshot-window; }
     Mod+F { fullscreen-window; }
@@ -138,8 +138,8 @@ binds {
     Mod+Shift+Home { move-column-to-first; }
     Mod+Shift+End  { move-column-to-last; }
 
-    Mod+Ctrl+K { focus-workspace-down; }
-    Mod+Ctrl+L { focus-workspace-up; }
+    Mod+I { focus-workspace-down; }
+    Mod+O { focus-workspace-up; }
     Mod+Shift+I { move-column-to-workspace-down; }
     Mod+Shift+O { move-column-to-workspace-up; }
 
