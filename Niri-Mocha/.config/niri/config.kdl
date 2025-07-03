@@ -1,0 +1,195 @@
+////////////////
+/// MONITORS ///
+////////////////
+
+output "eDP-1" { mode "1366x768@60"; }
+
+/////////////////
+/// AUTOSTART ///
+/////////////////
+
+// spawn-at-startup "swaync"
+spawn-at-startup "wl-paste" "--type" "text" "--watch" "cliphist" "store"
+spawn-at-startup "wl-paste" "--type" "image" "--watch" "cliphist" "store"
+spawn-at-startup "~/.theme.sh"
+spawn-at-startup "swayidle"
+spawn-at-startup "kitty" "--execute" "--hold" "sudo" "pacman" "-Syu"
+
+/////////////////////////////
+/// ENVIRONMENT VARIABLES ///
+/////////////////////////////
+
+environment {
+    XCURSOR_SIZE "24"
+    QT_QPA_PLATFORM "wayland"
+    QT_QPA_PLATFORMTHEME "qt5ct"
+    QT_WAYLAND_DISABLE_WINDOWDECORATION "1"
+    QT_AUTO_SCREEN_SCALE_FACTOR "1"
+    DISPLAY ":0"
+}
+
+/////////////////////
+/// LOOK AND FEEL ///
+/////////////////////
+
+layout {
+    gaps 10
+
+    border {
+        width 3
+
+        active-color "#cba6f7"
+        inactive-color "#cdd6f4"
+        urgent-color "#f38ba8"
+    }
+
+    insert-hint {
+        color "#cba6f740"
+    }
+
+    preset-column-widths {
+        proportion 0.25
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.75
+        proportion 1.0
+    }
+
+    default-column-width { proportion 0.5; }
+
+    focus-ring { off; }
+
+    struts {
+        left 10
+        right 10
+        top 0
+        bottom 0
+    }
+}
+
+prefer-no-csd
+
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+// Open the Firefox picture-in-picture player as floating by default.
+window-rule {
+    // This app-id regular expression will work for both:
+    // - host Firefox (app-id is "firefox")
+    // - Flatpak Firefox (app-id is "org.mozilla.firefox")
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    open-floating true
+}
+
+window-rule {
+    geometry-corner-radius 7.5
+    clip-to-geometry true
+    draw-border-with-background false
+}
+
+window-rule {
+    match is-floating=true
+    baba-is-float true
+}
+
+window-rule {
+    match app-id="obsidian"
+    opacity 0.9
+}
+
+binds {
+    Mod+Shift+Slash { show-hotkey-overlay; }
+    
+    // Tools //
+    CTRL+Space { spawn "fuzzel"; }
+    Mod+Return { spawn "kitty"; }
+    Mod+Shift+Return { spawn "cool-retro-term" "--profile" "mocha"; }
+    Mod+B { spawn "librewolf"; }
+    Mod+Ctrl+Shift+B { spawn "flatpak" "run" "org.torproject.torbrowser-launcher"; }
+    Mod+P { spawn "protonvpn-app"; }
+    Mod+O { spawn "obsidian" "--no-sandbox" "--ozone-platform=wayland" "--ozone-platform-hint=auto" "--enable-features=UseOzonePlatform,WaylandWindowDecorations"; }
+    Print { screenshot; }
+    Shift+Print { screenshot-window; }
+    Mod+F { fullscreen-window; }
+    Mod+Q { close-window; }
+    Ctrl+Mod+Delete { quit skip-confirmation=true; }
+    Mod+Num_Lock { spawn "hyprlock"; }
+
+    // Manage Windows //
+    Mod+Left { focus-column-left; }
+    Mod+Down { focus-window-down; }
+    Mod+Up { focus-window-up; }
+    Mod+Right { focus-column-right; }
+    Mod+J { focus-column-left; }
+    Mod+K { focus-window-down; }
+    Mod+L { focus-window-up; }
+    Mod+Semicolon { focus-column-right; }
+    
+    Mod+Shift+Left { move-column-left; }
+    Mod+Shift+Down { move-window-down; }
+    Mod+Shift+Up { move-window-up; }
+    Mod+Shift+Right { move-column-right; }
+    Mod+Shift+J { move-column-left; }
+    Mod+Shift+K { move-window-down; }
+    Mod+Shift+L { move-window-up; }
+    Mod+Shift+Semicolon { move-column-right; }
+
+    Mod+Home { focus-column-first; }
+    Mod+End  { focus-column-last; }
+    Mod+Shift+Home { move-column-to-first; }
+    Mod+Shift+End  { move-column-to-last; }
+
+    Mod+Ctrl+K { focus-workspace-down; }
+    Mod+Ctrl+L { focus-workspace-up; }
+    Mod+Shift+I { move-column-to-workspace-down; }
+    Mod+Shift+O { move-column-to-workspace-up; }
+
+    Mod+BracketLeft  { consume-or-expel-window-left; }
+    Mod+BracketRight { consume-or-expel-window-right; }
+
+    Mod+R { switch-preset-column-width; }
+
+    Mod+Minus { set-column-width "-10%"; }
+    Mod+Equal { set-column-width "+10%"; }
+
+    Mod+Shift+Minus { set-window-height "-10%"; }
+    Mod+Shift+Equal { set-window-height "+10%"; }
+
+    Mod+W { toggle-column-tabbed-display; }
+
+    Mod+C { toggle-window-floating; }
+    Mod+Shift+C { switch-focus-between-floating-and-tiling; }
+    
+    // Manage Brightness/Volume/Media
+    XF86MonBrightnessUp allow-when-locked=true { spawn "brightnessctl" "s" "+10%"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "s" "10%-"; }
+
+    XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%+"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%-"; }
+    XF86AudioMute allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_SINK@" "toggle"; }
+    XF86AudioMicMute allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_SOURCE@" "toggle"; }
+    XF86AudioPlay allow-when-locked=true { spawn "playerctl" "play-pause"; }
+    XF86AudioPrev allow-when-locked=true { spawn "playerctl" "previous"; }
+    XF86AudioNext allow-when-locked=true { spawn "playerctl" "next"; }
+
+    Mod+TouchpadScrollDown { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.02-"; }
+    Mod+TouchpadScrollUp { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.02+"; }
+    
+    // ??? //
+    Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
+}
+
+switch-events {
+    lid-close { spawn "hyprlock"; }
+}
+
+hotkey-overlay {
+    skip-at-startup
+}
+
+input {
+    warp-mouse-to-focus
+    focus-follows-mouse
+
+    mod-key "Alt"
+    mod-key-nested "Super"
+}
