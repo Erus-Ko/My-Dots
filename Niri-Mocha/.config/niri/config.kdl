@@ -12,7 +12,6 @@
 spawn-at-startup "swaync"
 spawn-at-startup "wl-paste" "--type" "text" "--watch" "cliphist" "store"
 spawn-at-startup "wl-paste" "--type" "image" "--watch" "cliphist" "store"
-spawn-at-startup "~/.theme.sh"
 spawn-at-startup "swayidle"
 
 /////////////////////////////
