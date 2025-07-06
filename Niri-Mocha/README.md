@@ -8,3 +8,13 @@
 + **File Manager:** [superfile](https://superfile.netlify.app)
 + **Text Editor:** [Neovim](https://neovim.io)
 + **Browser:** [Librewolf](https://librewolf.net)
+| Package | Function |
+| ------- | -------- |
+| `niri` | Wayland Compositor |
+| `dunst` | Notifcations Daemon |
+| `zsh` | Command-Line Interpreter |
+| `kitty` | Terminal Emulator |
+| `fuzzel` | Applications Launcher |
+| `superfile` | File Manager |
+| `neovim` | Text Editor |
+| `librewolf` (installed from AUR) | Internet Browser |
