@@ -19,3 +19,8 @@
 | `superfile` | File Manager |
 | `neovim` | Text Editor |
 | `librewolf`* | Internet Browser |
+| `starship` | Shell Prompt |
+| `fast-syntax-highlighting`** | Syntax Highlighter |
+| `zsh-autosuggestions`** | Shell Autosuggestor |
+<sub>*Installed from AUR.</sub>  
+<sup>**Installed without a package manager.</sup>
